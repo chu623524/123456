@@ -3,9 +3,7 @@ import pandas as pd
 import joblib
 import numpy as np
 import requests
-import shap
 from io import BytesIO
-import matplotlib.pyplot as plt
 
 # 设置模型和标准化器的路径
 MODEL_URL = 'https://raw.githubusercontent.com/chu623524/123456/main/best_svm_model.pkl'
@@ -31,7 +29,7 @@ model, scaler = load_model()
 # 定义类别变量选项
 吸烟状态_options = {0: "不吸烟", 1: "吸烟"}
 性别_options = {0: "男", 1: "女"}
-家庭月收入_options = {0: "0-2000", 1: "2001-5000", 2: "5001-10000", 3: "10000+"}
+家庭月收入_options = {0: "0-2000", 1: "2001-5000", 2: "5001-8000", 3: "8000+"}
 心理负担_options = {0: "没有", 1: "稍有", 2: "中度", 3: "较重", 4: "严重"}
 文化程度_options = {0: "小学及以下", 1: "初中", 2: "高中/中专", 3: "大专及以上"}
 
@@ -94,19 +92,3 @@ if st.button("预测"):
     # 输出结果
     st.write(f"**预测结果:** {prediction}")
     st.write(f"**PTSD 概率:** {prediction_prob:.4f}")
-    
-    # 计算SHAP值
-    explainer = shap.KernelExplainer(model.predict_proba, input_scaled)
-    shap_values = explainer.shap_values(input_scaled)
-    
-    # 创建SHAP力图
-    st.subheader("SHAP 贡献度图")
-    shap.initjs()  # 初始化JS显示
-    
-    # 绘制 SHAP force plot 并保存为图像
-    fig = plt.figure(figsize=(10, 6))
-    shap.force_plot(explainer.expected_value[1], shap_values[1], input_scaled, feature_names=list(input_data.keys()))
-    plt.savefig("shap_force_plot.png", bbox_inches='tight', dpi=1200)
-    
-    # 显示SHAP力图
-    st.image("shap_force_plot.png")
