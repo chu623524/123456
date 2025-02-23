@@ -30,6 +30,8 @@ model, scaler = load_model()
 吸烟状态_options = {0: "不吸烟", 1: "吸烟"}
 性别_options = {0: "男", 1: "女"}
 家庭月收入_options = {0: "0-2000", 1: "2001-5000", 2: "5001-10000", 3: "10000+"}
+心理负担_options = {0: "没有", 1: "稍有", 2: "中度", 3: "较重", 4: "严重"}
+文化程度_options = {0: "小学及以下", 1: "初中", 2: "高中/中专", 3: "大专及以上"}
 
 # 设置Web界面
 st.title("PTSD 预测系统")
@@ -37,21 +39,21 @@ st.write("基于支持向量机 (SVM) 进行 PTSD 预测")
 
 # 获取用户输入的特征
 ASDS = st.number_input("ASDS", min_value=0.0, max_value=95.0, value=50.0)  # 数值型，最高95分
-白蛋白 = st.number_input("白蛋白", min_value=0.0, max_value=100.0, value=50.0)  # 单位g/L
+白蛋白 = st.number_input("白蛋白 (单位: g/L)", min_value=0.0, max_value=100.0, value=50.0)  # 单位g/L
 吸烟状态 = st.selectbox("吸烟状态", options=list(吸烟状态_options.keys()), format_func=lambda x: 吸烟状态_options[x])
-疼痛评分 = st.number_input("疼痛评分", min_value=0.0, max_value=10.0, value=5.0)  # 单位：分
-心理负担 = st.number_input("心理负担", min_value=0.0, max_value=4.0, value=2.0)  # 0没有，1稍有，2中度，3较重，4 严重
-谷胺酰基移换酶 = st.number_input("谷胺酰基移换酶", min_value=0.0, max_value=500.0, value=50.0)  # 单位U/L
-A_G = st.number_input("A/G", min_value=0.0, max_value=3.0, value=0.5)  # 范围0 - 3.0
-住院天数 = st.number_input("住院天数", min_value=0, max_value=100, value=10)  # 单位：天
-文化程度 = st.number_input("文化程度", min_value=0, max_value=3, value=1)  # 0小学及以下 1初中 2高中/中专 3大专及以上
-氯 = st.number_input("氯", min_value=0.0, max_value=150.0, value=50.0)  # 范围 0-150 单位：mmol/L
+疼痛评分 = st.number_input("疼痛评分 (单位: 分)", min_value=0.0, max_value=10.0, value=5.0)  # 单位：分
+心理负担 = st.selectbox("心理负担 (0: 没有, 4: 严重)", options=list(心理负担_options.keys()), format_func=lambda x: 心理负担_options[x])  # 分类变量
+谷胺酰基移换酶 = st.number_input("谷胺酰基移换酶 (单位: U/L)", min_value=0.0, max_value=500.0, value=50.0)  # 单位U/L
+A_G = st.number_input("A/G (范围 0 - 3.0)", min_value=0.0, max_value=3.0, value=0.5)
+住院天数 = st.number_input("住院天数 (单位: 天)", min_value=0, max_value=100, value=10)  # 单位：天
+文化程度 = st.selectbox("文化程度 (0: 小学及以下, 3: 大专及以上)", options=list(文化程度_options.keys()), format_func=lambda x: 文化程度_options[x])  # 分类变量
+氯 = st.number_input("氯 (单位: mmol/L, 范围 0-150)", min_value=0.0, max_value=150.0, value=50.0)
 性别 = st.selectbox("性别", options=list(性别_options.keys()), format_func=lambda x: 性别_options[x])  # 0男 1女
-舒张压 = st.number_input("舒张压", min_value=0.0, max_value=200.0, value=80.0)  # 单位毫米汞柱
-中性粒细胞绝对值 = st.number_input("中性粒细胞绝对值", min_value=0.0, max_value=100.0, value=50.0)  # 范围 0-100，单位是 10的9次方/L
-碱性磷酸酶 = st.number_input("碱性磷酸酶", min_value=0.0, max_value=1000.0, value=150.0)  # 单位U/L
-体温 = st.number_input("体温", min_value=30.0, max_value=42.0, value=37.0)  # 摄氏度
-凝血酶原时间比值 = st.number_input("凝血酶原时间比值", min_value=0.0, max_value=10.0, value=1.0)
+舒张压 = st.number_input("舒张压 (单位: mmHg)", min_value=0.0, max_value=200.0, value=80.0)  # 单位毫米汞柱
+中性粒细胞绝对值 = st.number_input("中性粒细胞绝对值 (单位: 10^9/L, 范围 0-100)", min_value=0.0, max_value=100.0, value=50.0)
+碱性磷酸酶 = st.number_input("碱性磷酸酶 (单位: U/L)", min_value=0.0, max_value=1000.0, value=150.0)
+体温 = st.number_input("体温 (单位: 摄氏度, 范围 30-42)", min_value=30.0, max_value=42.0, value=37.0)
+凝血酶原时间比值 = st.number_input("凝血酶原时间比值 (单位: 无单位)", min_value=0.0, max_value=10.0, value=1.0)
 家庭月收入 = st.selectbox("家庭月收入", options=list(家庭月收入_options.keys()), format_func=lambda x: 家庭月收入_options[x])  # 收入区间
 
 # 创建一个字典来存储所有输入的特征
