@@ -35,7 +35,7 @@ model, scaler = load_model()
 
 # 设置Web界面
 st.title("PTSD 预测系统")
-st.write("基于支持向量机 (SVM) 进行 PTSD 预测")
+st.write("创伤后1个月PTSD预测")
 
 # 获取用户输入的特征
 ASDS = st.number_input("ASDS (分)", value=50.0, help="单位: 分，最高95分")
