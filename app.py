@@ -3,7 +3,9 @@ import pandas as pd
 import joblib
 import numpy as np
 import requests
+import shap
 from io import BytesIO
+import matplotlib.pyplot as plt
 
 # 设置模型和标准化器的路径
 MODEL_URL = 'https://raw.githubusercontent.com/chu623524/123456/main/best_svm_model.pkl'
@@ -92,3 +94,12 @@ if st.button("预测"):
     # 输出结果
     st.write(f"**预测结果:** {prediction}")
     st.write(f"**PTSD 概率:** {prediction_prob:.4f}")
+    
+    # 使用SHAP计算模型的解释值
+    explainer = shap.KernelExplainer(model.predict_proba, input_scaled)
+    shap_values = explainer.shap_values(input_scaled)
+    
+    # 绘制SHAP force plot
+    st.subheader("SHAP 贡献度图")
+    shap.initjs()  # 初始化JS显示
+    st.pyplot(shap.force_plot(explainer.expected_value[1], shap_values[1], input_scaled, feature_names=list(input_data.keys())))
