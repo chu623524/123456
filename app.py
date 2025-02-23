@@ -86,9 +86,12 @@ if st.button("预测"):
     input_scaled = scaler.transform(input_array)
 
     # 进行预测
-    prediction_prob = model.predict_proba(input_scaled)[0, 1]  # PTSD 的概率
-    prediction = "PTSD 高风险" if prediction_prob > 0.5 else "PTSD 低风险"
-    
-    # 输出结果
-    st.write(f"**预测结果:** {prediction}")
-    st.write(f"**PTSD 概率:** {prediction_prob:.4f}")
+prediction_prob = model.predict_proba(input_scaled)[0, 1]  # PTSD 的概率
+if prediction_prob > 0.5:
+    prediction = f"根据我们的模型，你患PTSD的风险很高。声明: 该预测仅供参考，我们建议您结合专业医生的意见进行判断。"
+else:
+    prediction = f"根据我们的模型，你患PTSD的风险很高。声明: 该预测仅供参考，我们建议您结合专业医生的意见进行判断。"
+
+# 输出结果
+st.write(f"**PTSD 概率:** {prediction_prob:.4f}")
+st.write(f"**预测结果:** {prediction}")
