@@ -38,21 +38,21 @@ st.title("PTSD 预测系统")
 st.write("基于支持向量机 (SVM) 进行 PTSD 预测")
 
 # 获取用户输入的特征
-ASDS = st.number_input("ASDS", value=50.0, help="单位: 分，最高95分")
-白蛋白 = st.number_input("白蛋白", value=50.0, help="单位: g/L")
+ASDS = st.number_input("ASDS (分)", value=50.0, help="单位: 分，最高95分")
+白蛋白 = st.number_input("白蛋白 (g/L)", value=50.0, help="单位: g/L")
 吸烟状态 = st.selectbox("吸烟状态", options=list(吸烟状态_options.keys()), format_func=lambda x: 吸烟状态_options[x])
-疼痛评分 = st.number_input("疼痛评分", value=5.0, help="单位: 分")
+疼痛评分 = st.number_input("疼痛评分 (分)", value=5.0, help="单位: 分")
 心理负担 = st.selectbox("心理负担", options=list(心理负担_options.keys()), format_func=lambda x: 心理负担_options[x])  # 分类变量
-谷胺酰基移换酶 = st.number_input("谷胺酰基移换酶", value=50.0, help="单位: U/L")
+谷胺酰基移换酶 = st.number_input("谷胺酰基移换酶 (U/L)", value=50.0, help="单位: U/L")
 A_G = st.number_input("A/G", value=0.5, help="范围 0 - 3.0")
-住院天数 = st.number_input("住院天数", value=10, help="单位: 天")
+住院天数 = st.number_input("住院天数 (天)", value=10, help="单位: 天")
 文化程度 = st.selectbox("文化程度", options=list(文化程度_options.keys()), format_func=lambda x: 文化程度_options[x])  # 分类变量
-氯 = st.number_input("氯", value=50.0, help="单位: mmol/L，范围 0-150")
+氯 = st.number_input("氯 (mmol/L)", value=50.0, help="单位: mmol/L，范围 0-150")
 性别 = st.selectbox("性别", options=list(性别_options.keys()), format_func=lambda x: 性别_options[x])  # 0男 1女
-舒张压 = st.number_input("舒张压", value=80.0, help="单位: mmHg")
-中性粒细胞绝对值 = st.number_input("中性粒细胞绝对值", value=50.0, help="单位: 10^9/L，范围 0-100")
-碱性磷酸酶 = st.number_input("碱性磷酸酶", value=150.0, help="单位: U/L")
-体温 = st.number_input("体温", value=37.0, help="单位: 摄氏度，范围 30-42")
+舒张压 = st.number_input("舒张压 (mmHg)", value=80.0, help="单位: mmHg")
+中性粒细胞绝对值 = st.number_input("中性粒细胞绝对值 (10^9/L)", value=50.0, help="单位: 10^9/L，范围 0-100")
+碱性磷酸酶 = st.number_input("碱性磷酸酶 (U/L)", value=150.0, help="单位: U/L")
+体温 = st.number_input("体温 (°C)", value=37.0, help="单位: 摄氏度，范围 30-42")
 凝血酶原时间比值 = st.number_input("凝血酶原时间比值", value=1.0, help="单位: 无单位")
 家庭月收入 = st.selectbox("家庭月收入", options=list(家庭月收入_options.keys()), format_func=lambda x: 家庭月收入_options[x])  # 收入区间
 
