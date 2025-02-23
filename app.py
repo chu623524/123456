@@ -2,16 +2,26 @@ import streamlit as st
 import pandas as pd
 import joblib
 import numpy as np
+import requests
+from io import BytesIO
 
 # 设置模型和标准化器的路径
-MODEL_PATH = r"D:\桌面新\python分析\网页APP\best_svm_model.pkl"
-SCALER_PATH = r"D:\桌面新\python分析\网页APP\scaler.pkl"
+MODEL_URL = 'https://raw.githubusercontent.com/chu623524/123456/main/best_svm_model.pkl'
+SCALER_URL = 'https://raw.githubusercontent.com/chu623524/123456/main/scaler.pkl'
 
-# 加载模型和标准化器
+# 下载模型和标准化器
 @st.cache_resource
 def load_model():
-    model = joblib.load(MODEL_PATH)
-    scaler = joblib.load(SCALER_PATH)
+    # 下载模型
+    model_response = requests.get(MODEL_URL)
+    model_data = BytesIO(model_response.content)
+    model = joblib.load(model_data)
+
+    # 下载标准化器
+    scaler_response = requests.get(SCALER_URL)
+    scaler_data = BytesIO(scaler_response.content)
+    scaler = joblib.load(scaler_data)
+
     return model, scaler
 
 model, scaler = load_model()
