@@ -29,13 +29,13 @@ model, scaler = load_model()
 # 定义类别变量选项
 吸烟状态_options = {0: "不吸烟", 1: "吸烟"}
 性别_options = {0: "男", 1: "女"}
-家庭月收入_options = {0: "0-2000", 1: "2001-5000", 2: "5001-8000", 3: "8000+"}
+家庭月收入_options = {0: "0-2000", 1: "2001-5000", 2: "5001-10000", 3: "10000+"}
 心理负担_options = {0: "没有", 1: "稍有", 2: "中度", 3: "较重", 4: "严重"}
 文化程度_options = {0: "小学及以下", 1: "初中", 2: "高中/中专", 3: "大专及以上"}
 
 # 设置Web界面
 st.title("PTSD 预测系统")
-st.write("创伤后1个月PTSD预测")
+st.write("基于支持向量机 (SVM) 进行 PTSD 预测")
 
 # 获取用户输入的特征
 ASDS = st.number_input("ASDS (分)", value=50.0, help="单位: 分，最高95分")
@@ -86,12 +86,12 @@ if st.button("预测"):
     input_scaled = scaler.transform(input_array)
 
     # 进行预测
-prediction_prob = model.predict_proba(input_scaled)[0, 1]  # PTSD 的概率
-if prediction_prob > 0.5:
-    prediction = f"根据我们的模型，你患PTSD的风险很高。声明: 该预测仅供参考，我们建议您结合专业医生的意见进行判断。"
-else:
-    prediction = f"根据我们的模型，你患PTSD的风险很高。声明: 该预测仅供参考，我们建议您结合专业医生的意见进行判断。"
-
-# 输出结果
-st.write(f"**PTSD 概率:** {prediction_prob:.4f}")
-st.write(f"**预测结果:** {prediction}")
+    prediction_prob = model.predict_proba(input_scaled)[0, 1]  # PTSD 的概率
+    if prediction_prob > 0.5:
+        prediction = f"根据我们的模型，你患PTSD的风险很高。声明: 该预测仅供参考，我们建议您结合专业医生的意见进行判断。"
+    else:
+        prediction = f"根据我们的模型，你患PTSD的风险较低。声明: 该预测仅供参考，我们建议您结合专业医生的意见进行判断。"
+    
+    # 输出结果
+    st.write(f"**PTSD 概率:** {prediction_prob:.4f}")
+    st.write(f"**预测结果:** {prediction}")
